@@ -47,6 +47,36 @@ export default function Record() {
   const quranSelected =
     pages > 0 || ayahs > 0 || surahs > 0 || juz > 0 || minutes > 0;
 
+const isDateLocked = (selectedDate) => {
+  const now = new Date();
+
+  // 🔥 Define Fajr time (5:00 AM)
+  const fajrHour = 5;
+
+  const today = new Date();
+  const todayString = today.toISOString().split("T")[0];
+
+  // If selected date is today → always allowed
+  if (selectedDate === todayString) return false;
+
+  // Get yesterday's date
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayString = yesterday.toISOString().split("T")[0];
+
+  // If it's yesterday
+  if (selectedDate === yesterdayString) {
+    if (now.getHours() < fajrHour) {
+      return false; // Before Fajr → allow editing
+    } else {
+      return true; // After Fajr → lock
+    }
+  }
+
+  // Any older date → locked
+  return true;
+};
+
   const calculatePoints = () => {
     return (
       pages * 2 +
@@ -157,6 +187,12 @@ export default function Record() {
       router.push("/");
       return;
     }
+     // 🔒 Fajr Lock Check
+  if (isDateLocked(selectedDate)) {
+    alert("This day's record is locked after Fajr 🌙");
+    return;
+  }
+
 
     const totalPointsToday = calculatePoints();
 

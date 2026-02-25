@@ -88,7 +88,7 @@ export default function Home() {
         </h2>
 
         <h1 style={styles.title}>
-          🌙 RAMZAN CHALLENGE
+          🌙 RAMADAN CHALLENGE
         </h1>
 
         <div style={styles.toggleBox}>
