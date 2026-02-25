@@ -44,7 +44,20 @@ export default function GroupDashboard() {
     const records = recordsSnap.docs.map(doc => doc.data());
 
     const groupLeaderboard = users
-      .filter(user => groupData.members.includes(user.id))
+    //   .filter(user => groupData.members.includes(user.id))
+    .filter(user => {
+  if (!groupData.members.includes(user.id)) return false;
+
+  // 🔥 If creator chose NOT to compete
+  if (
+    user.id === groupData.createdBy &&
+    groupData.includeCreatorInCompetition === false
+  ) {
+    return false;
+  }
+
+  return true;
+})
       .map(user => {
         const total = records
           .filter(r => r.userId === user.id)
@@ -303,6 +316,16 @@ export default function GroupDashboard() {
         <h1 style={styles.title}>
           👥 {group.name}
         </h1>
+
+
+{group.createdBy === userId && 
+ group.includeCreatorInCompetition === false && (
+  <p style={{ fontSize: "13px", color: "#14532d" }}>
+    You are participating as Admin (Not in competition)
+  </p>
+)}
+
+
 
         <div style={styles.inviteBox}>
           <strong>Invite Code:</strong> {group.inviteCode}

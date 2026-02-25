@@ -24,6 +24,7 @@ export default function Dashboard() {
   const [groupName, setGroupName] = useState("");
   const [joinCode, setJoinCode] = useState("");
   const [showHelp, setShowHelp] = useState(false);
+  const [includeInCompetition, setIncludeInCompetition] = useState(true);
 
   const userId =
     typeof window !== "undefined"
@@ -140,6 +141,7 @@ export default function Dashboard() {
       normalizedName: cleanName,
       createdBy: userId,
       members: [userId],
+       includeCreatorInCompetition: includeInCompetition, // 🔥 NEW FIELD
       inviteCode,
       createdAt: new Date()
     });
@@ -355,6 +357,17 @@ export default function Dashboard() {
           onChange={(e) => setGroupName(e.target.value)}
           placeholder="Enter Group Name"
         />
+        <div style={{ marginBottom: "10px" }}>
+  <label style={{ fontSize: "14px" }}>
+    <input
+      type="checkbox"
+      checked={includeInCompetition}
+      onChange={(e) => setIncludeInCompetition(e.target.checked)}
+      style={{ marginRight: "6px" }}
+    />
+    Include myself in competition
+  </label>
+</div>
 
         <button
           style={styles.primaryButton}
